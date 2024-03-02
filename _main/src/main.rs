@@ -10,7 +10,7 @@ struct Product {
 
 impl Product {
     fn edit_name(&mut self, new_name: String) {
-        self.name = new_name.to_uppercase();
+        self.name = new_name.trim().to_uppercase();
     }
 
     fn edit_price(&mut self, new_price: f64) {
@@ -18,7 +18,7 @@ impl Product {
     }
 
     fn edit_description(&mut self, new_desc: String) {
-        self.description = new_desc;
+        self.description = new_desc.trim().to_string();
     }
 
     fn edit_quantity(&mut self, new_quantity: i32) {
@@ -37,11 +37,52 @@ impl Inventory {
         println!("Product '{}' added to inventory.", name);
     }
 
-    fn edit_product(&mut self, name: &str, new_description: String, new_price: f64, new_quantity: i32) {
+    fn edit_product(&mut self, name: &str) {
         if let Some(product) = self.products.get_mut(name) {
-            product.description = new_description;
-            product.price = new_price;
-            product.quantity = new_quantity;
+
+            println!("-------------------");
+            println!("'Edit Menu'");
+            println!("-------------------");
+            println!("=> 1: Edit Name");
+            println!("=> 2: Edit Price");
+            println!("=> 3: Edit Description");
+            println!("=> 4: Edit Quantity");
+            println!("=> 5: Return to Main Menu");
+            let item_choice = get_integer_input();
+
+            match item_choice {
+                1 => {
+                    let mut new_name = String::new();
+
+                    println!("Enter New Name: ");
+                    io::stdin().read_line(&mut new_name).expect("Failed to read line");
+
+                    product.edit_name(new_name);
+                },
+                2 => {
+                    println!("Enter New Price: ");
+                    let mut new_price = get_float_input();
+
+                    product.edit_price(new_price);
+                },
+                3 => {
+                    let mut new_desc = String::new();
+
+                    println!("Enter New Description: ");
+                    io::stdin().read_line(&mut new_desc).expect("Failed to read line");
+
+                    product.edit_description(new_desc);
+                },
+                4 => {
+                    println!("Enter New Quantity: ");
+                    let mut new_quantity = get_integer_input();
+
+                    product.edit_quantity(new_quantity);
+                },
+                5 => {return;},
+                _ => {},
+            }
+
             println!("Product '{}' updated.", name);
         } else {
             println!("Product '{}' not found.", name);
@@ -57,7 +98,12 @@ impl Inventory {
     }
 
     fn generate_report(&self) {
-        println!("\t      'Inventory Report'\n");
+        if self.products.is_empty() {
+            println!("Inventory is Empty! :<");
+            return;
+        }
+        println!("-------------------");
+        println!("'Inventory Report'");
         println!("-------------------");
         for (name, product) in &self.products {
             println!("Name: {}", name);
@@ -71,23 +117,27 @@ impl Inventory {
 
 fn main() {
 
-    // if !admin_check() {
-    //     println!("Sorry, wrong credentials :<\nExiting System!");
-    //     return;
-    // }
+    if !admin_check() {
+        println!("Sorry, wrong credentials :<\nExiting System!");
+        return;
+    }
 
     let mut inventory = Inventory { products: HashMap::new() };
 
     let mut menu_choice: i32;
 
-    println!("\tRusty Inventory Management\n----------------------------------------
-    => 1: Add Product
-    => 2: Edit Product Info
-    => 3: Delete Product
-    => 4: Exit System
-    ");
+    println!("\tRusty Inventory Management\n----------------------------------------");
 
     loop {
+        println!("----------------------------------------
+=> 1: Add Product
+=> 2: Edit Product Info
+=> 3: Delete Product
+=> 4: Generate Inventory Report
+=> 5: Exit System");
+        println!("----------------------------------------");
+
+        println!("Enter your choice:");
         menu_choice = get_integer_input();  
         match menu_choice {
             1 => {
@@ -109,14 +159,35 @@ fn main() {
                 quantity = get_integer_input();
 
                 inventory.add_product(name.trim().to_uppercase(), description.trim().to_string(), price, quantity);
+                println!("----------------------------------------");
             },
 
-            // 2 => editProduct(),
-            // 3 => deleteProduct(),
+            2 => {
+                let mut prod_name = String::new();
+                println!("Enter Product Name: ");
+                io::stdin().read_line(&mut prod_name).expect("Failed to read line");
+                prod_name = prod_name.trim().to_uppercase().to_string();
+                inventory.edit_product(&prod_name);
+            },
+
+            3 => {
+                let mut name = String::new();
+
+                println!("Enter Product Name: ");
+                io::stdin().read_line(&mut name).expect("Failed to read line");
+
+                inventory.delete_product(&name.trim().to_uppercase());
+            },
+
             4 => {
+                inventory.generate_report();
+            },
+
+            5 => {
                 println!("Goodbye :>");
                 return;
-            },
+            }
+
             _ => println!("Choose a valid option!"),
         }
     }
@@ -125,7 +196,6 @@ fn main() {
 
 fn get_integer_input() -> i32 {
     loop {
-        println!("Enter: ");
         let mut input = String::new();
 
         io::stdin().read_line(&mut input).expect("Failed to read line");
@@ -139,7 +209,6 @@ fn get_integer_input() -> i32 {
 
 fn get_float_input() -> f64 {
     loop {
-        println!("Enter: ");
         let mut input = String::new();
 
         io::stdin().read_line(&mut input).expect("Failed to read line");
@@ -151,33 +220,33 @@ fn get_float_input() -> f64 {
     }
 }
 
-// fn admin_check() -> bool {
+fn admin_check() -> bool {
 
-//     // For the sake of simplicity, I have set admin as login user and password!
-//     let user_check_val : String = String::from("admin");
-//     let pass_check_val : String = String::from("admin");
+    // For the sake of simplicity, I have set admin as login user and password!
+    let user_check_val : String = String::from("admin");
+    let pass_check_val : String = String::from("admin");
 
-//     println!("\n----------------------------------------\n\tRusty Inventory Management\n----------------------------------------");
-//     println!("\t      'Login Panel'\n");
+    println!("\n----------------------------------------\n\tRusty Inventory Management\n----------------------------------------");
+    println!("\t      'Login Panel'\n");
 
-//     let mut user_name = String::new();
-//     println!("Enter your username: ");
-//     io::stdin().read_line(&mut user_name)
-//     .expect("Failed to read line");
+    let mut user_name = String::new();
+    println!("Enter your username: ");
+    io::stdin().read_line(&mut user_name)
+    .expect("Failed to read line");
 
-//     let mut user_pass = String::new();
-//     println!("Enter your password: ");
-//     io::stdin().read_line(&mut user_pass)
-//     .expect("Failed to read line");
+    let mut user_pass = String::new();
+    println!("Enter your password: ");
+    io::stdin().read_line(&mut user_pass)
+    .expect("Failed to read line");
 
-//     if user_name.trim() == user_check_val && user_pass.trim() == pass_check_val {
-//         true
-//     }
+    if user_name.trim() == user_check_val && user_pass.trim() == pass_check_val {
+        true
+    }
 
-//     else {
-//         false
-//     }
-// }
+    else {
+        false
+    }
+}
 
 
 
