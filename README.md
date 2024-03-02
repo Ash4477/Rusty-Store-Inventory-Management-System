@@ -1,6 +1,6 @@
 # Rusty Store Inventory Management System
 
-![Team_Logo](./project_visual.png)
+<img src = "./project_visual.png" width= 200px height = 200px>
 
 ## Individual
 
