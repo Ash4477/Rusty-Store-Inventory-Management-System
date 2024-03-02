@@ -110,6 +110,9 @@ impl Inventory {
             println!("Description: {}", product.description);
             println!("Price: ${:.2}", product.price);
             println!("Quantity: {}", product.quantity);
+            if product.quantity <= 10 {
+                println!("Low Stock!\nUpdate ASAP");
+            }
             println!("-------------------");
         }
     }
