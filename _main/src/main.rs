@@ -7,22 +7,38 @@ struct Product {
     quantity: i32,
 }
 
-fn main() {
+impl Product {
+    fn edit_name(&mut self, new_name: String) {
+        self.name = new_name;
+    }
 
-    // let mut products : Vec<i32> = Vec::new();
+    fn edit_price(&mut self, new_price: f64) {
+        self.price = new_price;
+    }
+
+    fn edit_description(&mut self, new_desc: String) {
+        self.description = new_desc;
+    }
+
+    fn edit_quantity(&mut self, new_quantity: i32) {
+        self.quantity = new_quantity;
+    }
+}
+
+fn main() {
 
     if !admin_check() {
         println!("Sorry, wrong credentials :<\nExiting System!");
         return;
     }
 
+    let mut products : Vec<i32> = Vec::new();
+
     // println!("\tRusty Inventory Management\n----------------------------------------
     // => Add Product
     // => Edit Product Info
     // => Delete Product
     // ");
-
-
 
 }
 
@@ -50,7 +66,6 @@ fn admin_check() -> bool {
     }
 
     else {
-        println!(" {} {} \n {} {}",user_name,user_check_val,user_pass,pass_check_val);
         false
     }
 }
