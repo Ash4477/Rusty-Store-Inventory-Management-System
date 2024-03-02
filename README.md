@@ -48,7 +48,7 @@ Our vision is to revolutionize inventory management for small retailers, providi
 
 ### Deployment:
 
--Test the developed functionalities thoroughly to ensure reliability and accuracy.
+- Test the developed functionalities thoroughly to ensure reliability and accuracy.
 - Deploy the Rusty Store Inventory Management System on the desired platform (e.g., local server, cloud) for production use.
 
 ## Technology Stack
