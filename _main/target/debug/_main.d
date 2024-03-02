@@ -1,0 +1,1 @@
+D:\Study\ Shit\Programming\ Shit\Rust-Bootcamp\Rusty-Store-Inventory-Management-System\_main\target\debug\_main.exe: D:\Study\ Shit\Programming\ Shit\Rust-Bootcamp\Rusty-Store-Inventory-Management-System\_main\src\main.rs
