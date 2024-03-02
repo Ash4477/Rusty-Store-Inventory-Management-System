@@ -1,6 +1,6 @@
 # Rusty Store Inventory Management System
 
-project visual
+![Team_Logo](./project_visual.png)
 
 ## Individual
 
