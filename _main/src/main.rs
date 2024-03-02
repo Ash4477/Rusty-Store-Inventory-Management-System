@@ -90,10 +90,40 @@ impl Inventory {
     }
 
     fn delete_product(&mut self, name: &str) {
-        if let Some(_) = self.products.remove(name) {
-            println!("Product '{}' deleted from inventory.", name);
-        } else {
-            println!("Product '{}' not found.", name);
+        loop {
+            println!("=> 1. Remove One Item Of This Product");
+            println!("=> 2. Remove All Items Of This Product");
+            println!("=> 3. Return to Main Menu");
+            let item_choice = get_integer_input();
+            match item_choice {
+                1 => {
+                    if let Some(product) = self.products.get_mut(name) {
+                        product.quantity -= 1;
+                        if product.quantity <= 0 {
+                            self.products.remove(name);
+                            println!("Product '{}' deleted from inventory.", name);
+                        }
+                    }
+                    return;
+                },
+
+                2 => {
+                    if let Some(_) = self.products.remove(name) {
+                        println!("Product '{}' deleted from inventory.", name);
+                    } else {
+                        println!("Product '{}' not found.", name);
+                    }
+                    return;
+                },
+
+                3 => {
+                    return;
+                }
+
+                _ => {
+                    println!("Invalid Input, Choose a valid option:");
+                }
+            }
         }
     }
 
@@ -158,8 +188,16 @@ fn main() {
                 println!("Enter Description:");
                 io::stdin().read_line(&mut description).expect("Failed to read line");
 
-                println!("Enter Quantity:");
-                quantity = get_integer_input();
+                loop {
+                    println!("Enter Quantity:");
+                    quantity = get_integer_input();
+                    if quantity <= 0 {
+                        println!("Quantity can't be zero or less!\nRe-enter:");
+                    }
+                    else {
+                        break;
+                    }
+                }
 
                 inventory.add_product(name.trim().to_uppercase(), description.trim().to_string(), price, quantity);
                 println!("----------------------------------------");
