@@ -2,7 +2,7 @@
 
 <img src = "./project_visual.png" width= 200px height = 200px>
 
-## Individual
+## About Me
 
 Adil Feroze, a senior studying Computer Science at COMSATS University Islamabad Campus, is passionate about game and web development. He's participated in game jams, honing his skills in both fields. Intrigued by web3 technology, he delved into responsive web design before joining the Rise In x GDSC Rust Bootcamp. This immersive experience has fueled his enthusiasm for blockchain development, marking the next exciting chapter in his journey as a developer.
 
